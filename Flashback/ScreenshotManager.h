@@ -6,94 +6,100 @@
 //------------------------------------------------------------------------------
 
 class ScreenshotsSet {
-  public:
+public:
 
-    typedef list<shared_ptr<Screenshot>> ScrSet;
+	typedef list<shared_ptr<Screenshot>> ScrSet;
 
-    typedef ScrSet::iterator iterator;
-    typedef ScrSet::const_iterator const_iterator ;
+	typedef ScrSet::iterator iterator;
+	typedef ScrSet::const_iterator const_iterator;
 
-    iterator begin() { return set.begin(); }
-    iterator end() { return set.end(); }
+	iterator begin() { return set.begin(); }
+	iterator end() { return set.end(); }
 
-    const_iterator cbegin() const { return set.begin(); }
-    const_iterator cend() const { return set.end(); }
+	const_iterator cbegin() const { return set.begin(); }
+	const_iterator cend() const { return set.end(); }
 
-    size_t size() const { return set.size(); }
+	size_t size() const { return set.size(); }
 
-    ScreenshotsSet() {}
-    ScreenshotsSet(shared_ptr<Screenshot> scr) {
-      set.push_back(scr);
-    }
-    void push_front(shared_ptr<Screenshot> scr) {
-      set.push_front(scr);
-    }
-  private:
-    ScrSet set;
+	ScreenshotsSet() {}
+	ScreenshotsSet(shared_ptr<Screenshot> scr) {
+		set.push_back(scr);
+	}
+	void push_front(shared_ptr<Screenshot> scr) {
+		set.push_front(scr);
+	}
+private:
+	ScrSet set;
 };
 
 class ScreenshotsSession {
-  public:
+public:
 
-    typedef list<shared_ptr<ScreenshotsSet>> ScrSession;
+	typedef list<shared_ptr<ScreenshotsSet>> ScrSession;
 
-    typedef ScrSession::iterator iterator;
-    typedef ScrSession::const_iterator const_iterator ;
+	typedef ScrSession::iterator iterator;
+	typedef ScrSession::const_iterator const_iterator;
 
-    iterator begin() { return session.begin(); }
-    iterator end() { return session.end(); }
+	iterator begin() { return session.begin(); }
+	iterator end() { return session.end(); }
 
-    const_iterator cbegin() const { return session.begin(); }
-    const_iterator cend() const { return session.end(); }
+	const_iterator cbegin() const { return session.begin(); }
+	const_iterator cend() const { return session.end(); }
 
-    size_t size() const { return session.size(); }
+	size_t size() const { return session.size(); }
 
-    ScreenshotsSession() {}
-    ScreenshotsSession(shared_ptr<ScreenshotsSet> set) {
-      session.push_back(set);
-    }
-    void push_front(shared_ptr<ScreenshotsSet> set) {
-      session.push_front(set);
-    }
-    // TODO: saving and loading session
-    void save() {}
-    void load() {}
-  private:
-    ScrSession session;
+	ScreenshotsSession() {}
+	ScreenshotsSession(shared_ptr<ScreenshotsSet> set) {
+		session.push_back(set);
+	}
+	void push_front(shared_ptr<ScreenshotsSet> set) {
+		session.push_front(set);
+	}
+	// TODO: saving and loading session
+	void save() {}
+	void load() {}
+private:
+	ScrSession session;
 };
 
 class ScreenshotManager {
-  public:
-    ScreenshotManager() {
-      imProc = ImageProcessor();
-      displayON = false;
-      font.loadFromFile("../fonts/LiberationMono-Bold.ttf");
+public:
+	ScreenshotManager() {
+		imProc = ImageProcessor();
+		displayON = false;
+		font.loadFromFile("../fonts/LiberationMono-Bold.ttf");
 
-      // Initialize session structure
-	  LOG(INFO) << "SCR_MAN Initialize session structure";
-      currentSession = ScreenshotsSession(); // <--- New session
-      currentSession.push_front(std::make_shared<ScreenshotsSet>()); // Assigning set to session
-      itCurrentSet = currentSession.begin();
-    }
+		// TODO: Settings dependent
+		timestampText.setFont(font); // select the font
+		timestampText.setCharacterSize(22); // // set the character size in pixels
+		timestampText.setFillColor(sf::Color::Red); // set the color
+		timestampText.setStyle(sf::Text::Bold); // set the text style
 
-    void Shot(); // Get screenshot using SreenshotProvider
-    void Main(); // Main loop of screenshot Manager
+		// Initialize session structure
+		LOG(INFO) << "SCR_MAN Initialize session structure";
+		currentSession = ScreenshotsSession(); // <--- New session
+		currentSession.push_front(std::make_shared<ScreenshotsSet>()); // Assigning set to session
+		itCurrentSet = currentSession.begin();
+	}
 
-    void RedrawScr();
+	void Shot(); // Get screenshot using SreenshotProvider
+	void Main(); // Main loop of screenshot Manager
 
-  private:
-    ScreenshotsSet::iterator itCurrentScr;
-    ScreenshotsSession::iterator itCurrentSet;
-    ScreenshotsSession currentSession; // Collection of sets
+	void RedrawScr();
 
-    int n;
-    bool displayON;
-    sf::Font font;
+private:
+	ScreenshotsSet::iterator itCurrentScr;
+	ScreenshotsSession::iterator itCurrentSet;
+	ScreenshotsSession currentSession; // Collection of sets
 
-    ImageProcessor imProc;
+	int n;
+	bool displayON;
+	sf::Font font;
 
-    shared_ptr<sf::Image> screenshotImage;
-    sf::Texture screenshotTexture;
-    sf::Sprite screenshotSprite;
-    sf::Text timestampText;
+	ImageProcessor imProc;
+
+	shared_ptr<sf::Image> screenshotImage;
+	sf::Texture screenshotTexture;
+	sf::Sprite screenshotSprite;
+	sf::Text timestampText;
 };
