@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 	el::Configurations defaultConf;
 	defaultConf.setToDefault();
 	// Values are always std::string
-	defaultConf.set(el::Level::Info, el::ConfigurationType::Format, "%datetime{%H:%m} %msg");
+	defaultConf.set(el::Level::Info, el::ConfigurationType::Format, "%datetime{%H:%m:%s} %msg");
 	// default logger uses default configurations
 	el::Loggers::reconfigureLogger("default", defaultConf);
 

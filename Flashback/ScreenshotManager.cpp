@@ -6,10 +6,10 @@
 
 void ScreenshotManager::Shot() {
   // Take screenshot and it in set
-  (*itCurrentSet)->push_front(std::make_shared<Screenshot>());// <--- Screenshot
+  (*itCurrentSet)->push_front(std::make_shared<Screenshot>()); // <--- Screenshot
   // Set iterator to latest screenshot in set
   itCurrentScr = (*itCurrentSet)->begin();
-  cout << "Set: " << currentSession.size() << " Screen: " << (*itCurrentSet)->size() << endl;
+  LOG(INFO) << (*itCurrentSet)->size() << " Screenshot placed in " << currentSession.size() << " Set";
 }
 
 void ScreenshotManager::RedrawScr() {
@@ -52,38 +52,38 @@ void ScreenshotManager::Main() {
         // "close requested" event: close the window
         case sf::Event::Closed:
           window.close();
-          cout << "Close screenshot manager" << endl;
+		  LOG(INFO) << "SCR_MAN Close";
           break;
         // key pressed
         case sf::Event::KeyPressed:
           // "ESC": close the window
           if (event.key.code == sf::Keyboard::Escape) {
             window.close();
-            cout << "Close screenshot manager" << endl;
+			LOG(INFO) << "SCR_MAN Close";
           }
           // "Down": change displayed screenshot
           if (event.key.code == sf::Keyboard::Down) {
-            cout << "Key: Down" << endl;
             if (itCurrentScr != --(*itCurrentSet)->end()) {
               itCurrentScr = std::next(itCurrentScr);
               RedrawScr();
             }
+			LOG(INFO) << "SCR_MAN Next screenshot (Key: Down)";
           }
           // "Up": change displayed screenshot
           if (event.key.code == sf::Keyboard::Up) {
-            cout << "Key: Up" << endl;
+			LOG(INFO) << "SCR_MAN Previous screenshot (Key: Up)";
             if (itCurrentScr != (*itCurrentSet)->begin()) {
               itCurrentScr = std::prev(itCurrentScr);
               RedrawScr();
             }
           }
           // "Right": next set
-          if (event.key.code == sf::Keyboard::Up) {
-            cout << "Key: Up" << endl;
+          if (event.key.code == sf::Keyboard::Right) {
+			LOG(INFO) << "TODO: SCR_MAN Next set (Key: Right)";
           }
           // "Left": previous set
-          if (event.key.code == sf::Keyboard::Up) {
-            cout << "Key: Up" << endl;
+          if (event.key.code == sf::Keyboard::Left) {
+			LOG(INFO) << "TODO: SCR_MAN Previous set (Key: Left)";
           }
           break;
         // don't process other types of events

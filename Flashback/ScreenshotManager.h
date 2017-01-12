@@ -55,7 +55,7 @@ class ScreenshotsSession {
     void push_front(shared_ptr<ScreenshotsSet> set) {
       session.push_front(set);
     }
-    // TODO:
+    // TODO: saving and loading session
     void save() {}
     void load() {}
   private:
@@ -70,7 +70,7 @@ class ScreenshotManager {
       font.loadFromFile("../fonts/LiberationMono-Bold.ttf");
 
       // Initialize session structure
-      cout << "Initialize session structure" << endl;
+	  LOG(INFO) << "SCR_MAN Initialize session structure";
       currentSession = ScreenshotsSession(); // <--- New session
       currentSession.push_front(std::make_shared<ScreenshotsSet>()); // Assigning set to session
       itCurrentSet = currentSession.begin();
